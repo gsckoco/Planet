@@ -3,33 +3,36 @@
 
 
 --]]
-
 local Planet = {}
-local env = {}
-
-local function copyTable(inT)
-    return {unpack(inT)}
-end
-
-if _VERSION > "Lua 5.1" then
-    env = copyTable(_ENV)
-else
-    env = copyTable(_G)
-end
-
 local env = getfenv(1)
 
 -- Planet API
 
-function Planet.class(class)
-    return {class = class, 
-        new = function(class) 
-            if class.constructor then
-                class.constructor()
-            end
-            -- TO DO: SET METATABLE
-            return class
-        end}
+function Planet.copyTable(inTable)
+    return {unpack(inTable)}
 end
+
+function Planet.class(class, inheritance)
+    local inherit = getfenv(
+        function()
+            local x = Planet.copyTable(inheritance)
+            return inheritance~=nil and x or {}
+        end
+    )
+    local object = Planet.copyTable(class)
+    object = setmetatable(object, inherit)
+    rawset(inherit, "self", inherit)
+    rawset(inherit, "this", inherit)
+    local new = function(...)
+        if class.constructor then
+            class.constructor(...)
+        end
+        return class
+    end
+    setmetatable({class = class, new = new}, inherit)
+    return {class = class, new = new}
+end
+
+env.Class = Planet.class -- Add it to the current environment because for easier use.
 
 return Planet
