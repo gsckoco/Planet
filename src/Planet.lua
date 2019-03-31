@@ -29,9 +29,16 @@ function Planet.copyTable(orig, copies)
     return copy
 end
 
-function Planet.class(tab)
-    local new = function(...)
-        local object = Planet.copyTable(tab)
+function Planet.Class(tab, inheritClass)
+    local class = Planet.copyTable(tab)
+    class.new = function(...)
+        local object = Planet.copyTable(class)
+        local inherit = inheritClass and inheritClass.new and inheritClass.new()
+        setmetatable(object, {
+            __index = function(self, i)
+                return rawget(self, i) or inherit and rawget(inherit, i)
+            end
+        })      
         if not object.constructor then
             object.constructor = (function() end)
         end
@@ -39,10 +46,10 @@ function Planet.class(tab)
         object.constructor = nil
         return object
     end
-    return {new=new}
+    return class
 end
 
 -- Set global environment
-env.Class = Planet.class
+env.Class = Planet.Class
 
 return Planet

@@ -1,5 +1,24 @@
 require("Planet")
 
+local dad = Class({
+    height = "180";
+    gender = "male";
+    name = "daddy";
+    address = "gay avenue";
+})
+
+local kid = Class({
+    height = "100";
+    gender = "male";
+    name = "son";
+}, dad)
+
+local boi = kid.new()
+local daddy = dad.new()
+print(boi.address)
+print(boi.height)
+print(daddy.height)
+
 local someClass = Class({
     constructor = function(self, ...)
         self.hello = {...}
