@@ -1,8 +1,3 @@
---[[
-
-
-
---]]
 local Planet = {}
 local env = getfenv(1)
 
