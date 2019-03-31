@@ -1,25 +1,16 @@
-local e = require("Planet")
+require("Planet")
 
 local someClass = Class({
-    input = {};
-    constructor = function( ... )
-        input = {...}
+    constructor = function(...)
+        hello = {...}
     end;
     Print = function()
-        print("I havent done anything")
+        print(unpack(hello))
     end;
 })
 
-local exampleClass = Class({
-    constructor = function( ... )
-        input = {...}
-    end;
-    --[[Print = function()
-        print(unpack(this.input))
-    end;]]
-},someClass)
+local newClass = someClass.new("Hello")
+local aNewClass = someClass.new("Hello aaa", "asdasdas")
 
-local newClass = exampleClass.new("Hello","World")
-for k,v in pairs(newClass) do
-    print(k,v)
-end
+newClass:Print()
+aNewClass:Print()

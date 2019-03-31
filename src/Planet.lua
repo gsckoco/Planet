@@ -8,31 +8,46 @@ local env = getfenv(1)
 
 -- Planet API
 
-function Planet.copyTable(inTable)
-    return {unpack(inTable)}
-end
-
-function Planet.class(class, inheritance)
-    local inherit = getfenv(
-        function()
-            local x = Planet.copyTable(inheritance)
-            return inheritance~=nil and x or {}
+function Planet.copyTable(orig, copies)
+    copies = copies or {}
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        if copies[orig] then
+            copy = copies[orig]
+        else
+            copy = {}
+            for orig_key, orig_value in next, orig, nil do
+                copy[Planet.copyTable(orig_key, copies)] = Planet.copyTable(orig_value, copies)
+            end
+            copies[orig] = copy
+            setmetatable(copy, Planet.copyTable(getmetatable(orig), copies))
         end
-    )
-    local object = Planet.copyTable(class)
-    object = setmetatable(object, inherit)
-    rawset(inherit, "self", inherit)
-    rawset(inherit, "this", inherit)
-    local new = function(...)
-        if class.constructor then
-            class.constructor(...)
-        end
-        return class
+    else -- number, string, boolean, etc
+        copy = orig
     end
-    setmetatable({class = class, new = new}, inherit)
-    return {class = class, new = new}
+    return copy
 end
 
-env.Class = Planet.class -- Add it to the current environment because for easier use.
+function Planet.Class(tab)
+    local new = function(...)
+        -- Create object
+        local object = Planet.copyTable(tab)
+
+        -- Run constructor
+        if not object.constructor then
+            object.constructor = (function() end)
+        end
+        object.constructor(...)
+        object.constructor = nil
+
+        -- Return object
+        return object
+    end
+    return {new=new}
+end
+
+-- Set global environment
+env.Class = Planet.Class
 
 return Planet
