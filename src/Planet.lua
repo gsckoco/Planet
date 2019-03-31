@@ -23,31 +23,26 @@ function Planet.copyTable(orig, copies)
             copies[orig] = copy
             setmetatable(copy, Planet.copyTable(getmetatable(orig), copies))
         end
-    else -- number, string, boolean, etc
+    else
         copy = orig
     end
     return copy
 end
 
-function Planet.Class(tab)
+function Planet.class(tab)
     local new = function(...)
-        -- Create object
         local object = Planet.copyTable(tab)
-
-        -- Run constructor
         if not object.constructor then
             object.constructor = (function() end)
         end
-        object.constructor(...)
+        object:constructor(...)
         object.constructor = nil
-
-        -- Return object
         return object
     end
     return {new=new}
 end
 
 -- Set global environment
-env.Class = Planet.Class
+env.Class = Planet.class
 
 return Planet
