@@ -1,8 +1,3 @@
---[[
-
-
-
---]]
 local Planet = {}
 local env = getfenv(1)
 
@@ -33,7 +28,7 @@ function Planet.Class(tab, inheritClass)
     local class = Planet.copyTable(tab)
     class.new = function(...)
         local object = Planet.copyTable(class)
-        local inherit = inheritClass and inheritClass.new and inheritClass.new()
+        local inherit = inheritClass and inheritClass.new and inheritClass.new(...)
         setmetatable(object, {
             __index = function(self, i)
                 return rawget(self, i) or inherit and rawget(inherit, i)
