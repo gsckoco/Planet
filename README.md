@@ -4,6 +4,10 @@ Object-orientated scripting for Lua made easier.
 Lua doesn't have built in OOP, which makes developers have to make their own manually. Planet is aimed to make using OOP within Lua a lot easier, and faster.
 
 # Usage
+Firstly, require the module. In Roblox, you can use the ID 3044032874:
+```lua
+planet = require(3044032874)
+```
 To create a class you use the ```Class```, this is put into the current environment by default.
 ```lua
 Class( ClassTable )
