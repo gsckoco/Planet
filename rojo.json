@@ -1,0 +1,10 @@
+{
+  "name": "Planet-master",
+  "servePort": 8000,
+  "partitions": {
+    "examples": {
+      "path": "src",
+      "target": "ServerScriptService"
+    }
+  }
+}

@@ -1,3 +1,8 @@
+--[[
+    Planet.lua
+    Written by Sublivion and gs_ck
+--]]
+
 local Planet = {}
 local env = getfenv(1)
 
