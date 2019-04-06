@@ -8,6 +8,7 @@ Firstly, require the module. In Roblox, you can use the ID 3044032874:
 ```lua
 planet = require(3044032874)
 ```
+You can use [the plugin](https://www.roblox.com/catalog/3044194321) to automatically add this to the start of your scripts,
 To create a class you use the ```Class```, this is put into the current environment by default.
 ```lua
 Class( ClassTable )

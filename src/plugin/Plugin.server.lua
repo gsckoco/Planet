@@ -3,29 +3,29 @@
     Written by Sublivion
 --]]
 
-MOD_TEMPLATE = [[planet = require(3044032874)
+MOD_TEMPLATE = 
+    [[planet = require(3044032874)
     exports = {}
 
     return exports
-]]
+    ]]
 
-SCRIPT_TEMPLATE = [[planet = require(3044032874)
+SCRIPT_TEMPLATE = 
+    [[planet = require(3044032874)
     print("Hello planet!")
-
-]]
+    ]]
 
 DEF_MOD = [[local module = {}
 
     return module
-]]
+    ]]
 
 DEF_SCRIPT = [[print("Hello world!")
-]]
+    ]]
 
 game.DescendantAdded:Connect(function(newScript)
     if newScript:IsA('LuaSourceContainer') then
         newScript:GetPropertyChangedSignal('Parent'):wait()
-        print(newScript.Source)
         if newScript.Source == DEF_SCRIPT then
             newScript.Source = SCRIPT_TEMPLATE
         elseif newScript.Source == DEF_MOD then
